@@ -1,0 +1,27 @@
+type: edu
+files:
+  - name: build.gradle
+    visible: true
+  - name: src/main/java/com/wimobile/android/test/MainActivity.kt
+    visible: true
+  - name: src/main/AndroidManifest.xml
+    visible: true
+  - name: src/main/res/layout/activity_main.xml
+    visible: true
+  - name: src/main/res/values/strings.xml
+    visible: true
+  - name: src/main/res/values/colors.xml
+    visible: true
+  - name: src/main/res/values/themes.xml
+    visible: true
+  - name: src/main/res/values-night/themes.xml
+    visible: true
+  - name: src/androidTest/java/com/wimobile/android/test/MainActivityTest.kt
+    visible: false
+    propagatable: false
+  - name: src/main/java/com/wimobile/android/test/MainViewModel.kt
+    visible: true
+  - name: src/main/java/com/wimobile/android/test/BatteryReceiver.kt
+    visible: true
+  - name: src/main/java/com/wimobile/android/test/IMainViewModel.kt
+    visible: true
