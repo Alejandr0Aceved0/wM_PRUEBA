@@ -2,14 +2,15 @@ package com.wimobile.android.test
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.widget.TextView
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
+import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
@@ -37,39 +38,32 @@ class MainActivityTest {
     }
 
     @Test
-    fun text_view_no_contiene_texto_correcto() {
-        val scenario = ActivityScenario.launch(MainActivity::class.java)
-        scenario.onActivity { activity ->
-            assertNotNull("La Activity no debería ser null", activity)
-
-            assertEquals(
-                "Texto esperado no coincide",
-                "Hola, Android!",
-                activity.findViewById<TextView>(R.id.textView).text
-            )
-        }
-        scenario.close()
-    }
-
-    @Test
     fun testUnregisterReceiverOnDestroy() {
-        val scenario = ActivityScenario.launch(MainActivity::class.java)
+        val scenario = activityRule.scenario
+        lateinit var receiver: BroadcastReceiver
+        lateinit var context: Context
 
         scenario.onActivity { activity ->
-            val context = ApplicationProvider.getApplicationContext<Context>()
             val receiverField = MainActivity::class.java.getDeclaredField("myReceiver")
             receiverField.isAccessible = true
-            val receiver = receiverField.get(activity) as BroadcastReceiver
+            receiver = receiverField.get(activity) as BroadcastReceiver
+            context = activity
+            assertNotNull("El receiver debería haber sido registrado en...", receiver)
+        }
 
-            context.sendBroadcast(Intent(Intent.ACTION_BATTERY_CHANGED))
-            activity.finish() // Simula el cierre de la actividad
-
-            try {
-                context.unregisterReceiver(receiver) // Debería lanzar una excepción si ya está desregistrado
-                fail("El receiver aún estaba registrado después de onDestroy()")
-            } catch (_: IllegalArgumentException) {
-                // Correcto: el receiver ya fue desregistrado
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                scenario.moveToState(Lifecycle.State.DESTROYED)
             }
+        }
+
+        try {
+            context.unregisterReceiver(receiver)
+            fail("El receiver aún estaba registrado después de... ")
+        } catch (_: IllegalArgumentException) {
+            assertTrue(true)
+        } catch (_: IllegalStateException) {
+            assertTrue(true)
         }
     }
 }

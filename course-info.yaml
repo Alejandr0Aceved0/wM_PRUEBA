@@ -5,17 +5,17 @@ summary: "Pasos para entregar la prueba -> Subir a un repositorio Git (recomenda
   \ Hacer commit y push al repositorio. Enviar el enlace del repositorio por correo\
   \ o mensaje, o ir a la carpeta del proyecto en su computadora. Comprimir todo el\
   \ proyecto (.zip o .tar.gz). Subirlo a Google Drive/OneDrive y compartir el enlace."
+vendor:
+  name: Jose Silva
 programming_language: Kotlin
 environment: Android
 content:
-  - Introducción
-  - 01_Debugging
-  - 02_Implementacion
   - 03_Preguntas
+  - 01_Debugging
 environment_settings:
   jvm_language_level: JDK_23
 additional_files:
   - name: build.gradle
   - name: settings.gradle
   - name: gradle.properties
-yaml_version: 2
+yaml_version: 4

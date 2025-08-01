@@ -17,7 +17,7 @@ static String sanitizeName(String name) {
           return name.replaceAll("[ /\\\\:<>\"?*|()]", "_").replaceAll("(^[.]+)|([.]+\$)", "")
 }
 
-rootProject.name = 'Prueba_Técnica_Android_Juniors'
+rootProject.name = 'Prueba_Técnica_Android_01'
 
 rootProject.projectDir.eachDirRecurse {
   if (!isTaskDir(it) || it.path.contains(".idea")) {
